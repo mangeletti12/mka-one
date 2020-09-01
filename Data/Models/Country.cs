@@ -40,7 +40,7 @@ namespace mka_one.Data.Models
         /// <summary>
         /// Country code (alpha 3 format)
         /// </summary>
-        public decimal ISO3 { get; set; }
+        public string ISO3 { get; set; }
 
 
         #endregion

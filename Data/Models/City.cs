@@ -40,11 +40,13 @@ namespace mka_one.Data.Models
         /// <summary>
         /// City latitufe
         /// </summary>
+        [Column (TypeName = "decimal(7,4)")]
         public decimal Lat { get; set; }
 
         /// <summary>
         /// City longitude
         /// </summary>
+        [Column (TypeName = "decimal(7,4)")]
         public decimal Lon { get; set; }
 
         /// <summary>
