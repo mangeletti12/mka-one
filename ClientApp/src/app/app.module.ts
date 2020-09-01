@@ -28,6 +28,7 @@ import { HealthCheckComponent } from './health-check/health-check.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'health-check', component: HealthCheckComponent },
     ])
   ],
   providers: [],
