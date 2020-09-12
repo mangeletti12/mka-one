@@ -1,21 +1,23 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 // import { HttpClient, HttpParams } from '@angular/common/http';
+// import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
-import { City } from './city';
-import { CityService } from './city.service';
+import { Country } from './country';
+import { CountryService } from './country.service';
 import { ApiResult } from '../base/base.service';
 
 @Component({
-  selector: 'app-cities',
-  templateUrl: './city.component.html',
-  styleUrls: ['./city.component.css']
+  selector: 'app-countries',
+  templateUrl: './countries.component.html',
+  styleUrls: ['./countries.component.css']
 })
-export class CityComponent {
-  public displayedColumns: string[] = ['id', 'name', 'lat', 'lon', 'countryName'];
-  public cities: MatTableDataSource<City>;
+export class CountriesComponent {
+  public displayedColumns: string[] = ['id', 'name', 'iso2', 'iso3', 'totCities'];
+  public countries: MatTableDataSource<Country>;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -25,14 +27,17 @@ export class CityComponent {
   defaultFilterColumn: string = "name";
   filterQuery: string = null;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true } ) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false } ) sort: MatSort;
 
   constructor(
-    private cityService: CityService) {
+    private countryService: CountryService
+  ) {
   }
 
   ngOnInit() {
+
+    
     this.loadData(null);
   }
 
@@ -64,7 +69,7 @@ export class CityComponent {
       ? this.filterQuery
       : null;
 
-    this.cityService.getData<ApiResult<City>>(
+    this.countryService.getData<ApiResult<Country>>(
       event.pageIndex,
       event.pageSize,
       sortColumn,
@@ -75,11 +80,9 @@ export class CityComponent {
         this.paginator.length = result.totalCount;
         this.paginator.pageIndex = result.pageIndex;
         this.paginator.pageSize = result.pageSize;
-        this.cities = new MatTableDataSource<City>(result.data);
+        this.countries = new MatTableDataSource<Country>(result.data);
       }, error => console.error(error));
   }
-
-
 
 
 }

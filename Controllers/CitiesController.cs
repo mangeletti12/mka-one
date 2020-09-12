@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using mka_one.Data;
 using mka_one.Data.Models;
 
-namespace WorldCities.Controllers
+namespace mka_one.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,15 +25,28 @@ namespace WorldCities.Controllers
         // GET: api/Cities/?pageIndex=0&pageSize=10
         // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ActionResult<ApiResult<City>>> GetCities(int pageIndex = 0, int pageSize = 10, string sortColumn = null, string sortOrder = null)
+        public async Task<ActionResult<ApiResult<CityDTO>>> GetCities(int pageIndex = 0, int pageSize = 10, string sortColumn = null, string sortOrder = null, string filterColumn = null, string filterQuery = null)
         {
-            return await ApiResult<City>.CreateAsync(
-                _context.Cities,
-                pageIndex,
-                pageSize,
-                sortColumn,
-                sortOrder
+             var cities = await ApiResult<CityDTO>.CreateAsync(
+                _context.Cities
+                .Select(c => new CityDTO()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Lat = c.Lat,
+                    Lon = c.Lon,
+                    CountryId = c.CountryId,
+                    CountryName = c.Country.Name
+                }),
+                    pageIndex,
+                    pageSize,
+                    sortColumn,
+                    sortOrder,
+                    filterColumn,
+                    filterQuery
                 );
+
+            return cities;
         }
 
         // GET: api/Cities/5
@@ -114,5 +127,24 @@ namespace WorldCities.Controllers
         {
             return _context.Cities.Any(e => e.Id == id);
         }
+
+
+        //
+        [HttpPost]
+        [Route("IsDupeCity")]
+        public bool IsDupeCity(City city)
+        {
+            return _context.Cities.Any(e => 
+                e.Name == city.Name
+                && e.Lat == city.Lat
+                && e.Lon == city.Lon
+                && e.CountryId == city.CountryId
+                && e.Id != city.Id
+            );
+        }
+
+
+
+
     }
 }
