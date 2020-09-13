@@ -5,7 +5,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
 import { City } from './city';
-import { CityService } from './city.service';
+import { CityService } from '../cities/city.service';
 import { ApiResult } from '../base/base.service';
 
 @Component({
